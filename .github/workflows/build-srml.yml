@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install NuGet
       run: choco install nuget.commandline -y
@@ -26,7 +26,7 @@ jobs:
       run: msbuild SRMLInstaller\SRMLInstaller.csproj /p:Configuration=Release
 
     - name: Upload Installer Artifact
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v4
       with:
         name: SRML-Installer
         path: SRMLInstaller\bin\Release\SRMLInstaller.exe
