@@ -1,0 +1,29 @@
+name: Build SRML Installer
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Allows you to manually trigger the build
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore NuGet Packages
+      run: nuget restore SRML.sln
+
+    - name: Build SRML
+      run: msbuild SRMLInstaller\SRMLInstaller.csproj /p:Configuration=Release
+
+    - name: Upload Installer Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: SRML-Installer
+        path: SRMLInstaller\bin\Release\SRMLInstaller.exe
