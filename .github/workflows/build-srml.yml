@@ -3,7 +3,7 @@ name: Build SRML Installer
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # Allows you to manually trigger the build
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,17 +13,20 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
+    - name: Install NuGet
+      run: choco install nuget.commandline -y
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
     - name: Restore NuGet Packages
       run: nuget restore SRML.sln
 
-    - name: Build SRML
+    - name: Build SRML Installer
       run: msbuild SRMLInstaller\SRMLInstaller.csproj /p:Configuration=Release
 
     - name: Upload Installer Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.3
       with:
         name: SRML-Installer
         path: SRMLInstaller\bin\Release\SRMLInstaller.exe
